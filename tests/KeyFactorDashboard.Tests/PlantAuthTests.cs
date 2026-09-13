@@ -15,6 +15,21 @@ public sealed class PlantAuthTests : IClassFixture<TestHost>
     public PlantAuthTests(TestHost host) => _host = host;
 
     [Fact]
+    public async Task Admin_can_list_users_and_audit_after_login()
+    {
+        var client = _host.CreateClient();
+        await PlantAuth.LoginAsync(client);
+
+        var users = await client.GetFromJsonAsync<List<UserRowDto>>("/api/v1/users", PythonApiClient.JsonOptions);
+        users.Should().NotBeNull();
+        users!.Should().Contain(u => u.Username == PlantAuth.AdminUser && u.Role == PlantRoles.Admin);
+
+        var audit = await client.GetFromJsonAsync<List<AuditRowDto>>("/api/v1/audit", PythonApiClient.JsonOptions);
+        audit.Should().NotBeNull();
+        audit!.Should().Contain(a => a.Action == "Login");
+    }
+
+    [Fact]
     public async Task Seed_admin_can_login_and_me_returns_admin()
     {
         var client = _host.CreateClient();
