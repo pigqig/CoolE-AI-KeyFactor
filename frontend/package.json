@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/obfuscate.mjs",
+    "check-i18n-messages": "node scripts/check-i18n-messages.mjs",
+    "build": "node scripts/check-i18n-messages.mjs && vite build && node scripts/obfuscate.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

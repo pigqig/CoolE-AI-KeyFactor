@@ -10,7 +10,7 @@ npm ci
 npm run build
 ```
 
-Vite 關 source map，再用 `javascript-obfuscator` 處理 `wwwroot/assets/*.js`（保留 Vue / ECharts 名稱）。
+`npm run build` 會先跑 `check-i18n-messages`：語系字串裡不合法的 `{...}`（vue-i18n 會當插值編譯，例如 `{ "lineId", ... }`）會讓建置失敗，避免 production `drop_console` 把錯誤藏起來、管理頁整片空白。字面大括號請寫 `{'{'}` / `{'}'}`。通過後才 Vite 建置，再用 `javascript-obfuscator` 處理 `wwwroot/assets/*.js`（保留 Vue / ECharts 名稱）。
 
 ## C#
 
