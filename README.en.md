@@ -4,6 +4,8 @@ A **plant-floor bench** for remanufacturing. Upload a process record (CSV). The 
 
 Built for **QA, R&D, and process engineering** — an operator-facing console, not an analyst notebook. The UI defaults to Traditional Chinese.
 
+**Stack:** ASP.NET Core (C#), Vue 3, ECharts, EF Core, SQLite / SQL Server, and Python (scikit-learn). C# hosts the API; Vue and ECharts render the bench; EF Core uses SQLite by default and can switch to SQL Server.
+
 [中文說明](README.md) · [Install](#install-in-five-minutes) · [Sponsor (JKOPay)](#sponsor)
 
 ![Key factors: temperature accounts for about 79.6%](docs/shot-importance.png)

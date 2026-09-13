@@ -4,6 +4,8 @@
 
 不是分析師的筆記本工具，而是**品保、研發與製程工程**在產線上就能使用的操作介面。介面預設繁體中文，可切換 English / 简体中文。
 
+**技術組成：** ASP.NET Core（C#）、Vue 3、ECharts、EF Core、SQLite／SQL Server、Python（scikit-learn）。主機用 C# 對外提供服務；畫面是 Vue 與 ECharts；資料預設 SQLite，同一套 EF Core 可改接 SQL Server。
+
 [安裝](#五分鐘裝起來) · [它解決什麼](#它解決什麼) · [街口贊助](#贊助) · [English](README.en.md)
 
 ![關鍵因子：溫度約佔 79.6%，建議先把溫度對齊再調整其他參數](docs/shot-importance.png)
