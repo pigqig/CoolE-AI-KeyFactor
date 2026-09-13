@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Obfuscator>
+  <Var name="InPath" value="." />
+  <Var name="OutPath" value="./obfuscated" />
+  <Var name="KeepPublicApi" value="true" />
+  <Var name="HidePrivateApi" value="true" />
+  <Var name="ReuseNames" value="true" />
+  <Var name="UseUnicodeNames" value="true" />
+  <Module file="KeyFactorDashboard.dll">
+    <SkipNamespace name="KeyFactorDashboard.Controllers" />
+    <SkipType name="Program" />
+  </Module>
+</Obfuscator>

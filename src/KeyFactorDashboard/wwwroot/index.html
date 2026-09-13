@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartAI KeyFactor</title>
+    <script>
+      (function () {
+        try {
+          var key = 'kf-theme'
+          var pref = localStorage.getItem(key)
+          if (pref !== 'light' && pref !== 'dark' && pref !== 'system') pref = 'light'
+          var resolved =
+            pref === 'system'
+              ? window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light'
+              : pref
+          document.documentElement.setAttribute('data-theme-pref', pref)
+          document.documentElement.setAttribute('data-theme', resolved)
+          document.documentElement.style.colorScheme = resolved
+        } catch (err) {
+          document.documentElement.setAttribute('data-theme', 'light')
+        }
+      })()
+    </script>
+    <script type="module" crossorigin src="/assets/index-C-YbANkH.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DNhTvYne.css">
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
