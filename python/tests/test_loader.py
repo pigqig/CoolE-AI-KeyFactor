@@ -50,3 +50,35 @@ def test_rejects_empty_target():
     with pytest.raises(ServiceError) as exc:
         validate_target(df, "Quality")
     assert exc.value.error_code == "emptyTarget"
+
+
+def test_drops_trailing_empty_columns():
+    df = pd.DataFrame(
+        {
+            "Temperature": [1.0, 2.0, 3.0],
+            "Quality": [10.0, 11.0, 12.0],
+            "Unnamed: 3": [pd.NA, pd.NA, pd.NA],
+            "Unnamed: 4": [None, None, None],
+            "EmptyNamed": [pd.NA, pd.NA, pd.NA],
+        }
+    )
+    out, columns = load_frame(df)
+    names = [c.name for c in columns]
+    assert "Temperature" in names
+    assert "Quality" in names
+    assert "EmptyNamed" in names
+    assert not any(str(n).startswith("Unnamed:") for n in names)
+    assert "Unnamed: 3" not in out.columns
+    assert "Unnamed: 4" not in out.columns
+
+
+def test_categorical_uses_object_none_not_pandas_na():
+    df = pd.DataFrame({"Line": pd.Series(["L1", pd.NA, "L2"], dtype="string"), "y": [1.0, 2.0, 3.0]})
+    out, columns = load_frame(df)
+    types = {c.name: c.type for c in columns}
+    missing = {c.name: c.missing_count for c in columns}
+    assert types["Line"] == "categorical"
+    assert out["Line"].dtype == object
+    assert out["Line"].iloc[1] is None
+    assert not any(v is pd.NA for v in out["Line"].tolist())
+    assert missing["Line"] == 1

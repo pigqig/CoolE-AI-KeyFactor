@@ -275,6 +275,8 @@ export default {
     invalidRole: 'Role must be Admin, Engineer, Qa, or Viewer.',
     invalidTask: 'Task must be auto, regression, binary, or multiclass.',
     invalidBinaryTarget: 'Binary classification needs exactly two distinct target values.',
-    invalidMulticlassTarget: 'Multiclass needs at least three distinct target values.'
+    invalidMulticlassTarget: 'Multiclass needs at least three distinct target values.',
+    pythonError: 'The analysis service failed unexpectedly. Check the table and retry, or inspect server logs.',
+    noFeatures: 'No usable feature columns. Lot/date-like high-cardinality fields are skipped; keep at least one numeric or categorical feature.'
   }
 }

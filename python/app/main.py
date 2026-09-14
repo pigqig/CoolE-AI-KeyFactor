@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, File, Query, Request, UploadFile
@@ -30,6 +32,17 @@ async def service_error_handler(_: Request, exc: ServiceError) -> JSONResponse:
     return JSONResponse(
         status_code=exc.status_code,
         content={"errorCode": exc.error_code, "message": exc.message},
+    )
+
+
+@app.exception_handler(Exception)
+async def unhandled_error_handler(_: Request, exc: Exception) -> JSONResponse:
+    return JSONResponse(
+        status_code=500,
+        content={
+            "errorCode": "pythonError",
+            "message": f"Analysis service failed: {type(exc).__name__}: {exc}",
+        },
     )
 
 
@@ -77,9 +90,23 @@ def _save_dataset(name: str, df, columns, dataset_id: str | None = None) -> dict
     return _dataset_payload(dataset_id, name, df, columns)
 
 
+def _code_stamp() -> str:
+    root = Path(__file__).resolve().parent
+    digest = hashlib.sha256()
+    for path in sorted(root.glob("*.py")):
+        digest.update(path.name.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+    return digest.hexdigest()[:16]
+
+
+# Snapshot at import so a stale worker cannot echo the newer files on disk.
+CODE_STAMP = _code_stamp()
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok"}
+    return {"status": "ok", "codeStamp": CODE_STAMP}
 
 
 @app.post("/datasets")
