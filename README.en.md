@@ -56,7 +56,14 @@ Roles, SQL Server, and machine API: [docs/USAGE.md](docs/USAGE.md).
 
 ## Sponsor
 
-If this tool helps your process analysis or QA workflow, you can support further development with JKOPay.
+These are the mornings this bench is for:
+
+- **Night shift lost yield.** The morning meeting splits: more additive, longer dwell, change the bake. Upload the shift CSV, train, and let the key-factor list put a shared priority on the table — before anyone changes a machine setting.
+- **Remanufactured conductivity missed the spec.** Process blames the additive; QA points at temperature. Run a what-if on one parameter, watch the prediction, then decide whether the line actually needs a change.
+- **OK / NG, and both sides have a story.** Train a classifier, look at the confusion matrix, and talk about which class the model actually misses — not who spoke louder.
+- **QA will not sign off yet.** They want a shared “control this first” list. An engineer’s model stays a draft until QA or an administrator approves it for the floor.
+
+If one of those moments sounds familiar, and this free bench helped you get through it, a JKOPay coffee is a kind thank-you. If not, keep using it anyway.
 
 Open JKOPay or any TWQR app, scan the code below, or enter JKO code **`3966`** (小言).
 
