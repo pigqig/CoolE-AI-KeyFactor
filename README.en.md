@@ -1,10 +1,10 @@
 # CoolE KeyFactor
 
-A **plant-floor bench** for remanufacturing. Upload a process record (CSV). The system ranks which process parameters most affect quality, shows how the prediction changes if you adjust them, and whether this model version has been approved by QA for use on the floor.
+A **plant-floor QC dashboard** for remanufacturing and process quality. Upload CSV process data; the bench trains a **scikit-learn (sklearn)** **Gradient Boosting** or **Random Forest** model, ranks **key factors** with **permutation importance** (feature importance), and plots **partial dependence** for one parameter at a time. Run a what-if before changing the line. A model version is usable as a floor standard only after QA approval.
 
-Built for **QA, R&D, and process engineering** — an operator-facing console, not an analyst notebook. The UI defaults to Traditional Chinese.
+Built for **QA, R&D, and process engineering** — an operator-facing console, not an analyst notebook. Free edition: login and roles, train, key factors, dependence, what-if, predictions, admin. The UI defaults to Traditional Chinese.
 
-**Stack:** ASP.NET Core (C#), Vue 3, ECharts, EF Core, SQLite / SQL Server, and Python (scikit-learn). C# hosts the API; Vue and ECharts render the bench; EF Core uses SQLite by default and can switch to SQL Server.
+**Stack:** ASP.NET Core (C#), Vue 3, ECharts, EF Core, SQLite / SQL Server, and Python (scikit-learn). C# hosts the API; Vue and ECharts render the bench; EF Core uses SQLite by default and can switch to SQL Server. Explanations use sklearn `permutation_importance` and `partial_dependence` — SHAP is not required.
 
 [中文說明](README.md) · [Install](#install-in-five-minutes) · [Sponsor (JKOPay)](#sponsor)
 
@@ -16,25 +16,26 @@ Sample remanufacturing conductivity run: coefficient of determination R² **0.82
 
 Temperature, pressure, time, additive, and humidity move together. When yield drops, the meeting splits: add more additive, or extend dwell. There is no shared order of which parameter to adjust first.
 
-Tools such as ExplainerDashboard and Shapash can compute this, but they are hard to put on the floor: no plant accounts, no model-approval flow, no audit trail, and a UI that is not meant for shift staff.
+Tools such as ExplainerDashboard and Shapash can compute permutation importance and partial dependence, but they are hard to put on the floor: no plant accounts, no model-approval flow, no audit trail, and a UI that is not meant for shift staff.
 
-CoolE KeyFactor turns the same analysis into a bench:
+CoolE KeyFactor turns the same machine-learning explanation into a bench:
 
 - Results are written in plain language first; charts are there to verify
 - Run a what-if before changing the line (demo: predicted conductivity from 13.56 to 15.88)
-- An engineer’s training is saved as a draft. After QA or an administrator approves it, that version becomes the one the floor may cite. Training, approval, and rejection are written to the audit log, so you can see who submitted the model and who approved it.
+- An engineer’s training is saved as a draft. After QA or an administrator approves it, that version becomes the one the floor may cite. Training, approval, and rejection are written to the audit log, so you can see who submitted the model and who approved it
 
-Quality targets can be continuous (conductivity) or categorical (OK/NG, rework/scrap, A/B/C).
+Quality targets can be continuous (conductivity) or categorical (OK/NG, rework/scrap, A/B/C). Typical lines: remanufacturing, conductive paste / electrodes, coating, bake, post-assembly quality, and other process-quality work.
 
 ## A day on the floor
 
 1. **Data** — upload a plant CSV, or load the remanufacturing / OK-NG sample.
-2. **Model** — choose auto, regression, binary, or multiclass. Classification shows a confusion matrix and per-class precision.
-3. **Key factors** — cards state which parameter to control first, and roughly how much it contributes.
-4. **Dependence** — hold other settings, vary one parameter, watch the quality prediction.
+2. **Model** — choose auto, regression, binary, or multiclass (sklearn Gradient Boosting or Random Forest). Classification shows a confusion matrix and per-class precision.
+3. **Key factors** — permutation importance ranks feature importance; plain-language notes say which parameter to control first and roughly how much it contributes.
+4. **Dependence** — sklearn partial dependence: hold other settings, vary one parameter, watch the quality prediction.
 5. **What-if** — compare predictions before and after an edit; you can start from a single plant record.
+6. **Predictions** — actual vs predicted per row; click a row to open What-if.
 
-Roles are built in: administrator, engineer, QA, and read-only. A read-only account can view results, not train or submit a simulation.
+Roles are built in: administrator, engineer, QA, and read-only. A read-only account can view results, not train or submit a simulation. Admin can create users, change roles, and read the audit log.
 
 ## Install in five minutes
 
@@ -55,7 +56,14 @@ Roles, SQL Server, and machine API: [docs/USAGE.md](docs/USAGE.md).
 
 ## Sponsor
 
-If this tool helps your process analysis or QA workflow, you can support further development with JKOPay.
+These are the mornings this bench is for:
+
+- **Night shift lost yield.** The morning meeting splits: more additive, longer dwell, change the bake. Upload the shift CSV, train, and let the key-factor list put a shared priority on the table — before anyone changes a machine setting.
+- **Remanufactured conductivity missed the spec.** Process blames the additive; QA points at temperature. Run a what-if on one parameter, watch the prediction, then decide whether the line actually needs a change.
+- **OK / NG, and both sides have a story.** Train a classifier, look at the confusion matrix, and talk about which class the model actually misses — not who spoke louder.
+- **QA will not sign off yet.** They want a shared “control this first” list. An engineer’s model stays a draft until QA or an administrator approves it for the floor.
+
+If one of those moments sounds familiar, and this free bench helped you get through it, a JKOPay coffee is a kind thank-you. If not, keep using it anyway.
 
 Open JKOPay or any TWQR app, scan the code below, or enter JKO code **`3966`** (小言).
 
