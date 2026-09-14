@@ -1,6 +1,6 @@
 # 操作備註
 
-畫面走同一套 `/api/v1`，Swagger 也是。未登入會先看到登入頁。
+把 CSV 製程資料交給 sklearn（Gradient Boosting / Random Forest）訓練後，在廠務 QC 儀表板看關鍵因子（permutation importance）、因子依存（partial dependence）、What-if 與單筆預測。畫面走同一套 `/api/v1`，Swagger 也是。未登入會先看到登入頁。
 
 ## 第一次登入
 
