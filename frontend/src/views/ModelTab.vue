@@ -21,6 +21,11 @@ function speakCard(card) {
   return speakInsight(t, te, card)
 }
 
+function featureName(col) {
+  const key = `features.${col}`
+  return te(key) ? t(key) : col
+}
+
 function versionMetric(v) {
   if (v.metrics?.accuracy != null) return Number(v.metrics.accuracy).toFixed(3)
   if (v.metrics?.rSquared != null) return Number(v.metrics.rSquared).toFixed(3)
@@ -44,6 +49,14 @@ async function reject(id) {
     <template v-else>
       <UnapprovedBanner />
       <div class="row-actions">
+        <div class="field">
+          <label>{{ t('data.pickTarget') }}</label>
+          <select v-model="floor.targetColumn" :disabled="!session.mayTrain">
+            <option v-for="col in floor.dataset.columns" :key="col.name" :value="col.name">
+              {{ featureName(col.name) }} ({{ col.name }})
+            </option>
+          </select>
+        </div>
         <div class="field">
           <label>{{ t('model.algorithm') }}</label>
           <select v-model="floor.algorithm" :disabled="!session.mayTrain">

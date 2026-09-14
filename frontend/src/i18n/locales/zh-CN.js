@@ -275,6 +275,8 @@ export default {
     invalidRole: '角色不在 Admin / Engineer / Qa / Viewer。',
     invalidTask: '任务只能是自动、回归、二元分类或多类分类。',
     invalidBinaryTarget: '二元分类需要目标列刚好两个不同值。',
-    invalidMulticlassTarget: '多类分类需要目标列至少三个不同值。'
+    invalidMulticlassTarget: '多类分类需要目标列至少三个不同值。',
+    pythonError: '分析服务发生未预期错误。请检查数据后再试，或查看服务器记录。',
+    noFeatures: '没有可用的特征列。批号、日期等高基数分类列会自动略过，请至少留一列可训练的数值或类别。'
   }
 }

@@ -14,7 +14,7 @@ import AdminTab from './views/AdminTab.vue'
 import LoginView from './views/LoginView.vue'
 import ThemeSwitch from './components/ThemeSwitch.vue'
 
-const { t, locale } = useI18n()
+const { t, te, locale } = useI18n()
 const floor = useShopFloor()
 const session = useSession()
 
@@ -31,7 +31,12 @@ const tabs = computed(() => {
   return list
 })
 
-const err = computed(() => (floor.errorCode ? t(`errors.${floor.errorCode}`) : ''))
+const err = computed(() => {
+  if (!floor.errorCode) return ''
+  const key = `errors.${floor.errorCode}`
+  if (te(key)) return t(key)
+  return floor.errorDetail || ''
+})
 
 const datasetChip = computed(() => {
   if (!floor.dataset) return { title: t('statusBar.data'), detail: t('statusBar.noData') }

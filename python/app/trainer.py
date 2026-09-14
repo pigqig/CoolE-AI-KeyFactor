@@ -65,6 +65,17 @@ def resolve_task(series: pd.Series, requested: str | None = "auto") -> tuple[Tas
     raise ServiceError("invalidTask", "task must be auto, regression, binary, or multiclass.", 400)
 
 
+def _is_id_like_categorical(series: pd.Series, n_rows: int) -> bool:
+    n_unique = int(series.nunique(dropna=True))
+    if n_unique <= 1:
+        return True
+    if n_unique > 50:
+        return True
+    if n_rows >= 20 and n_unique > max(20, int(0.5 * n_rows)):
+        return True
+    return False
+
+
 def feature_frame(df: pd.DataFrame, target: str) -> tuple[pd.DataFrame, pd.Series, list[str], list[str]]:
     validate_target(df, target)
     y = df[target]
@@ -72,8 +83,15 @@ def feature_frame(df: pd.DataFrame, target: str) -> tuple[pd.DataFrame, pd.Serie
     if X.shape[1] == 0:
         raise ServiceError("noFeatures", "Need at least one feature column besides the target.", 400)
     numeric = [c for c in X.columns if pd.api.types.is_numeric_dtype(X[c])]
-    categorical = [c for c in X.columns if c not in numeric]
-    return X, y, numeric, categorical
+    categorical = [
+        c
+        for c in X.columns
+        if c not in numeric and not _is_id_like_categorical(X[c], len(X))
+    ]
+    keep = numeric + categorical
+    if not keep:
+        raise ServiceError("noFeatures", "Need at least one feature column besides the target.", 400)
+    return X[keep], y, numeric, categorical
 
 
 def build_pipeline(

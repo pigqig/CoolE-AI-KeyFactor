@@ -275,6 +275,8 @@ export default {
     invalidRole: '角色不在 Admin / Engineer / Qa / Viewer。',
     invalidTask: '任務只能是自動、迴歸、二元分類或多類分類。',
     invalidBinaryTarget: '二元分類需要目標欄剛好兩個相異值。',
-    invalidMulticlassTarget: '多類分類需要目標欄至少三個相異值。'
+    invalidMulticlassTarget: '多類分類需要目標欄至少三個相異值。',
+    pythonError: '分析服務發生未預期錯誤。請檢查資料後再試，或查看伺服器紀錄。',
+    noFeatures: '沒有可用的特徵欄。批號、日期等高基數欄位會自動略過，請至少留一欄可訓練的數值或類別。'
   }
 }

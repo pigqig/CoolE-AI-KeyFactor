@@ -39,3 +39,21 @@ def test_tiny_inline_table_trains():
     assert model["metrics"]["rmse"] == model["metrics"]["rmse"]
     ranked = compute_importances(model)["importances"]
     assert ranked[0]["feature"] == "strong" or "strong" in [r["feature"] for r in ranked[:2]]
+
+
+def test_skips_id_like_categorical_and_trains_with_missing_cats():
+    n = 40
+    df = pd.DataFrame(
+        {
+            "Temp": list(range(n)),
+            "LotNo": [f"LOT-{i}" for i in range(n)],
+            "Line": (["L1", "L2", None] * 14)[:n],
+            "y": [float(i) * 0.5 + 1.0 for i in range(n)],
+        }
+    )
+    df, columns = load_frame(df)
+    model = fit_model(df, columns, "y", "rf")
+    assert "LotNo" not in model["categorical"]
+    assert "LotNo" not in model["X"].columns
+    assert "Line" in model["categorical"]
+    assert model["metrics"]["rmse"] == model["metrics"]["rmse"]

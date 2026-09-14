@@ -6,6 +6,7 @@ export const useShopFloor = defineStore('shopFloor', {
     tab: 'data',
     busy: false,
     errorCode: '',
+    errorDetail: '',
     dataset: null,
     targetColumn: '',
     algorithm: 'gbr',
@@ -31,14 +32,17 @@ export const useShopFloor = defineStore('shopFloor', {
   actions: {
     clearError() {
       this.errorCode = ''
+      this.errorDetail = ''
     },
     async wrap(fn) {
       this.busy = true
       this.errorCode = ''
+      this.errorDetail = ''
       try {
         return await fn()
       } catch (err) {
         this.errorCode = err.errorCode || 'generic'
+        this.errorDetail = err.message || ''
         throw err
       } finally {
         this.busy = false
@@ -70,10 +74,19 @@ export const useShopFloor = defineStore('shopFloor', {
       })
     },
     guessTarget() {
-      const names = (this.dataset?.columns || []).map((c) => c.name)
-      if (names.includes('QualityResult')) this.targetColumn = 'QualityResult'
-      else if (names.includes('TargetConductivity')) this.targetColumn = 'TargetConductivity'
-      else this.targetColumn = names[names.length - 1] || ''
+      const cols = this.dataset?.columns || []
+      const names = cols.map((c) => c.name)
+      if (names.includes('QualityResult')) {
+        this.targetColumn = 'QualityResult'
+        return
+      }
+      if (names.includes('TargetConductivity')) {
+        this.targetColumn = 'TargetConductivity'
+        return
+      }
+      const numeric = cols.filter((c) => c.type === 'numeric' && !String(c.name).startsWith('Unnamed'))
+      const hinted = numeric.find((c) => /導電|conductivity|quality|lpc|yield|良率/i.test(c.name))
+      this.targetColumn = hinted?.name || numeric[numeric.length - 1]?.name || ''
     },
     resetModel() {
       this.model = null

@@ -35,6 +35,19 @@ def _is_numeric(series: pd.Series) -> bool:
     return float(coerced.notna().sum()) / non_null >= NUMERIC_RATIO
 
 
+def _drop_empty_columns(df: pd.DataFrame) -> pd.DataFrame:
+    drop: list[Any] = []
+    for col in df.columns:
+        name = str(col).strip()
+        unnamed = name == "" or name.startswith("Unnamed:")
+        all_missing = bool(df[col].isna().all())
+        if all_missing and unnamed:
+            drop.append(col)
+    if drop:
+        return df.drop(columns=drop)
+    return df
+
+
 def infer_columns(df: pd.DataFrame) -> list[ColumnInfo]:
     columns: list[ColumnInfo] = []
     for col in df.columns:
@@ -43,9 +56,10 @@ def infer_columns(df: pd.DataFrame) -> list[ColumnInfo]:
             df[col] = pd.to_numeric(series, errors="coerce")
             typ = "numeric"
         else:
-            df[col] = series.astype("string")
+            cleaned = series.astype("string")
+            df[col] = cleaned.astype(object).where(cleaned.notna(), None)
             typ = "categorical"
-        columns.append(ColumnInfo(str(col), typ, int(df[col].isna().sum())))
+        columns.append(ColumnInfo(str(col), typ, int(pd.isna(df[col]).sum())))
     return columns
 
 
@@ -54,6 +68,9 @@ def load_frame(df: pd.DataFrame) -> tuple[pd.DataFrame, list[ColumnInfo]]:
         raise ServiceError("emptyDataset", "Dataset is empty.", 400)
     df = df.copy()
     df.columns = [str(c).strip() for c in df.columns]
+    df = _drop_empty_columns(df)
+    if df.shape[1] == 0:
+        raise ServiceError("emptyDataset", "Dataset is empty.", 400)
     if any(c == "" for c in df.columns):
         raise ServiceError("invalidColumns", "Column names must not be empty.", 400)
     if df.columns.duplicated().any():
