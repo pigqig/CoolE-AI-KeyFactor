@@ -65,12 +65,12 @@ These are the mornings this bench is for:
 
 If one of those moments sounds familiar, and this free bench helped you get through it, a JKOPay coffee is a kind thank-you. If not, keep using it anyway.
 
-Open JKOPay or any TWQR app, scan the code below, or enter JKO code **`3966`** (小言).
+Open JKOPay or any TWQR app, scan the code below, or enter JKO code **`396`** (小言).
 
 Same page as the GitHub Sponsor button: [pigqig#sponsor](https://github.com/pigqig#sponsor)
 
 ![JKOPay QR](docs/jkopay.png)
 
-**Joseph_Li** · [pigqig@gmail.com](mailto:pigqig@gmail.com) · [ourcoolidea.com](http://ourcoolidea.com) · [MIT](LICENSE)
+**Lee** · [pigqig@gmail.com](mailto:pigqig@gmail.com) · [ourcoolidea.com](http://ourcoolidea.com) · [MIT](LICENSE)
 
 UI inspired by [explainerdashboard](https://github.com/oegedijk/explainerdashboard) (MIT).
