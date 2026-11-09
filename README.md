@@ -87,11 +87,11 @@ dotnet run --project src/KeyFactorDashboard
 
 1. 打開街口支付，或任何支援 TWQR 的銀行／電子支付 App
 2. 掃描下方收款碼
-3. 或在街口支付輸入街口代碼 **`3966`**（小言）
+3. 或在街口支付輸入街口代碼 **`396`**（小言）
 
 也可以從 GitHub 右上角 Sponsor 按鈕連到同一頁：[pigqig#sponsor](https://github.com/pigqig#sponsor)
 
-![街口支付收款碼 · 小言 · 3966](docs/jkopay.png)
+![街口支付收款碼 · 小言 · 396](docs/jkopay.png)
 
 合作、授權或客製需求：<pigqig@gmail.com>（主旨請寫 KeyFactor）
 
@@ -99,10 +99,10 @@ dotnet run --project src/KeyFactorDashboard
 
 ## 作者
 
-**Joseph_Li** · 酷意 AI  
+**Lee** · 酷意 AI  
 郵件：[pigqig@gmail.com](mailto:pigqig@gmail.com)  
 網站：[ourcoolidea.com](http://ourcoolidea.com)
 
-[MIT](LICENSE) © 2026 Joseph_Li
+[MIT](LICENSE) © 2026 Lee
 
 畫面靈感來自 [explainerdashboard](https://github.com/oegedijk/explainerdashboard)（MIT）。
